@@ -50,6 +50,9 @@ do_putc:
     b swi_return
     
 do_getline:
+    @ Move system call arguments to r0 and r1 for swi_getline
+    mov r0, r1
+    mov r1, r2
     bl swi_getline   @ See armos.c
     
 swi_return:
@@ -70,7 +73,7 @@ do_irq:
 @ -------------------------------------------
 @ do_reset
 @ - exception handler for RESET
-@ - for demonstration only; not used in your simulator
+@ - executes when simulator begins running program
 @ -------------------------------------------
 do_reset:
     @ Set up stacks

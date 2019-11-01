@@ -2,8 +2,9 @@ typedef unsigned char uchar;
 typedef unsigned int uint;
 typedef unsigned int size_t;
 
+int main(); // declare main (defined in a separate .c file)
 
-// Execution begins here
+// Execution of user code begins here
 void start()
 {
   main();
@@ -144,11 +145,12 @@ void writeint(int num) {
 
 // keyboard interrupt handler 
 
-uint kbuf_count = 0;
-uint kbuf_queue_start = 0;
-uchar kbuf[10];
-int kbd_enabled = 1;
+uint kbuf_count = 0; // number of keystrokes in kbuf
+uint kbuf_queue_start = 0; // index of start of queue in kbuf
+uchar kbuf[10]; // keyboard buffer
+int kbd_enabled = 1; // 1 if we're accepting keystrokes, 0 if not
 
+// Outputs <c> to terminal device
 void internal_putc(char c) {
   asm("" : : : "r5"); // force use of stm for push
 
@@ -156,6 +158,8 @@ void internal_putc(char c) {
   asm("strb r0, [r1]");
 }
 
+// keyboard interrupt handler
+// performs processing for IRQ interrupt
 void kbdinthandler()
 {
     uchar *kbdevice = (uchar *)0x100001;
@@ -175,7 +179,9 @@ void kbdinthandler()
     
 }
 
-uchar getchar()
+// returns next character from kbuf buffer
+// waits for a keypress if kbuf buffer is empty
+uchar internal_getchar()
 {
     asm("" : : : "r5"); // force use of stm for push
 
@@ -203,7 +209,7 @@ void swi_getline(uchar *buf, uint maxlen)
     uchar c = 0;
     while (i < maxlen-1 && c != '\r') {
         
-        buf[i] = c = getchar();        
+        buf[i] = c = internal_getchar();        
         ++i;
     }
     buf[i] = '\0';
