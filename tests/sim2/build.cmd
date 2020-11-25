@@ -2,6 +2,9 @@
 call makeasm cmp
 call makeasm branch
 
+rem Build simpleiodemo
+call simpleiodemo_make
+
 rem Build armos
 arm-none-eabi-gcc.exe -c armos_asm.s armos.c  -nostdlib -fno-builtin -nostartfiles -nodefaultlibs  -mcpu=arm7tdmi
 

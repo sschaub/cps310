@@ -1,0 +1,18 @@
+
+armencodingnotes.o:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+   0:	e1a05003 	mov	r5, r3
+   4:	e2854019 	add	r4, r5, #25
+   8:	e0854006 	add	r4, r5, r6
+   c:	e0854106 	add	r4, r5, r6, lsl #2
+  10:	e0854716 	add	r4, r5, r6, lsl r7
+  14:	e5954019 	ldr	r4, [r5, #25]
+  18:	e7854106 	str	r4, [r5, r6, lsl #2]
+  1c:	e5b54019 	ldr	r4, [r5, #25]!
+  20:	e7a54106 	str	r4, [r5, r6, lsl #2]!
+  24:	e4954019 	ldr	r4, [r5], #25
+  28:	e6854106 	str	r4, [r5], r6, lsl #2

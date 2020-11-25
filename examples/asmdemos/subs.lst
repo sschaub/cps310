@@ -1,146 +1,67 @@
-   1              		.cpu arm7tdmi
-   2              		.eabi_attribute 20, 1
-   3              		.eabi_attribute 21, 1
-   4              		.eabi_attribute 23, 3
-   5              		.eabi_attribute 24, 1
-   6              		.eabi_attribute 25, 1
-   7              		.eabi_attribute 26, 1
-   8              		.eabi_attribute 30, 6
-   9              		.eabi_attribute 34, 0
-  10              		.eabi_attribute 18, 4
-  11              		.file	"subs.c"
-  12              		.text
-  13              	.Ltext0:
-  14              		.cfi_sections	.debug_frame
-  15              		.align	2
-  16              		.global	add
-  17              		.syntax unified
-  18              		.arm
-  19              		.fpu softvfp
-  21              	add:
-  22              	.LFB0:
-  23              		.file 1 "subs.c"
-   1:subs.c        **** // pointers.c
-   2:subs.c        **** 
-   3:subs.c        **** int add(int a, int b)
-   4:subs.c        **** {
-  24              		.loc 1 4 0
-  25              		.cfi_startproc
-  26              		@ Function supports interworking.
-  27              		@ args = 0, pretend = 0, frame = 16
-  28              		@ frame_needed = 1, uses_anonymous_args = 0
-  29              		@ link register save eliminated.
-  30 0000 04B02DE5 		str	fp, [sp, #-4]!
-  31              		.cfi_def_cfa_offset 4
-  32              		.cfi_offset 11, -4
-  33 0004 00B08DE2 		add	fp, sp, #0
-  34              		.cfi_def_cfa_register 11
-  35 0008 14D04DE2 		sub	sp, sp, #20
-  36 000c 10000BE5 		str	r0, [fp, #-16]
-  37 0010 14100BE5 		str	r1, [fp, #-20]
-   5:subs.c        ****   int result = a + b;
-  38              		.loc 1 5 0
-  39 0014 10201BE5 		ldr	r2, [fp, #-16]
-  40 0018 14301BE5 		ldr	r3, [fp, #-20]
-  41 001c 033082E0 		add	r3, r2, r3
-  42 0020 08300BE5 		str	r3, [fp, #-8]
-   6:subs.c        ****   return result;
-  43              		.loc 1 6 0
-  44 0024 08301BE5 		ldr	r3, [fp, #-8]
-   7:subs.c        **** }
-  45              		.loc 1 7 0
-  46 0028 0300A0E1 		mov	r0, r3
-  47 002c 00D08BE2 		add	sp, fp, #0
-  48              		.cfi_def_cfa_register 13
-  49              		@ sp needed
-  50 0030 04B09DE4 		ldr	fp, [sp], #4
-  51              		.cfi_restore 11
-  52              		.cfi_def_cfa_offset 0
-  53 0034 1EFF2FE1 		bx	lr
-  54              		.cfi_endproc
-  55              	.LFE0:
-  57              		.global	end
-  58              		.data
-  59              		.align	2
-  62              	end:
-  63 0000 05000000 		.word	5
-  64              		.text
-  65              		.align	2
-  66              		.global	main
-  67              		.syntax unified
-  68              		.arm
-  69              		.fpu softvfp
-  71              	main:
-  72              	.LFB1:
-   8:subs.c        **** 
-   9:subs.c        **** int end  = 5;
-  10:subs.c        **** 
-  11:subs.c        **** int main()
-  12:subs.c        **** {
-  73              		.loc 1 12 0
-  74              		.cfi_startproc
-  75              		@ Function supports interworking.
-  76              		@ args = 0, pretend = 0, frame = 8
-  77              		@ frame_needed = 1, uses_anonymous_args = 0
-  78 0038 00482DE9 		push	{fp, lr}
-  79              		.cfi_def_cfa_offset 8
-  80              		.cfi_offset 11, -8
-  81              		.cfi_offset 14, -4
-  82 003c 04B08DE2 		add	fp, sp, #4
-  83              		.cfi_def_cfa 11, 4
-  84 0040 08D04DE2 		sub	sp, sp, #8
-  13:subs.c        ****   int num = 0;
-  85              		.loc 1 13 0
-  86 0044 0030A0E3 		mov	r3, #0
-  87 0048 08300BE5 		str	r3, [fp, #-8]
-  14:subs.c        ****   int result; 
-  15:subs.c        ****   while (num < end) {
-  88              		.loc 1 15 0
-  89 004c 050000EA 		b	.L4
-  90              	.L5:
-  16:subs.c        ****     result = add(num, num+1);
-  91              		.loc 1 16 0
-  92 0050 08301BE5 		ldr	r3, [fp, #-8]
-  93 0054 013083E2 		add	r3, r3, #1
-  94 0058 0310A0E1 		mov	r1, r3
-  95 005c 08001BE5 		ldr	r0, [fp, #-8]
-  96 0060 FEFFFFEB 		bl	add
-  97 0064 0C000BE5 		str	r0, [fp, #-12]
-  98              	.L4:
-  15:subs.c        ****     result = add(num, num+1);
-  99              		.loc 1 15 0
- 100 0068 24309FE5 		ldr	r3, .L7
- 101 006c 003093E5 		ldr	r3, [r3]
- 102 0070 08201BE5 		ldr	r2, [fp, #-8]
- 103 0074 030052E1 		cmp	r2, r3
- 104 0078 F4FFFFBA 		blt	.L5
-  17:subs.c        ****   }
-  18:subs.c        ****   
-  19:subs.c        ****   asm("swi 0x11\n"); // exit
- 105              		.loc 1 19 0
- 106              		.syntax divided
- 107              	@ 19 "subs.c" 1
- 108 007c 110000EF 		swi 0x11
- 109              	
- 110              	@ 0 "" 2
- 111              		.arm
- 112              		.syntax unified
- 113 0080 0030A0E3 		mov	r3, #0
-  20:subs.c        **** }...
- 114              		.loc 1 20 0
- 115 0084 0300A0E1 		mov	r0, r3
- 116 0088 04D04BE2 		sub	sp, fp, #4
- 117              		.cfi_def_cfa 13, 8
- 118              		@ sp needed
- 119 008c 0048BDE8 		pop	{fp, lr}
- 120              		.cfi_restore 14
- 121              		.cfi_restore 11
- 122              		.cfi_def_cfa_offset 0
- 123 0090 1EFF2FE1 		bx	lr
- 124              	.L8:
- 125              		.align	2
- 126              	.L7:
- 127 0094 00000000 		.word	end
- 128              		.cfi_endproc
- 129              	.LFE1:
- 131              	.Letext0:
+
+subs.o:     file format elf32-littlearm
+
+
+Disassembly of section .text:
+
+00000000 <add>:
+// pointers.c
+
+int add(int a, int b)
+{
+   0:	e52db004 	push	{fp}		; (str fp, [sp, #-4]!)
+   4:	e28db000 	add	fp, sp, #0
+   8:	e24dd014 	sub	sp, sp, #20
+   c:	e50b0010 	str	r0, [fp, #-16]
+  10:	e50b1014 	str	r1, [fp, #-20]	; 0xffffffec
+  int result = a + b;
+  14:	e51b2010 	ldr	r2, [fp, #-16]
+  18:	e51b3014 	ldr	r3, [fp, #-20]	; 0xffffffec
+  1c:	e0823003 	add	r3, r2, r3
+  20:	e50b3008 	str	r3, [fp, #-8]
+  return result;
+  24:	e51b3008 	ldr	r3, [fp, #-8]
+}
+  28:	e1a00003 	mov	r0, r3
+  2c:	e28bd000 	add	sp, fp, #0
+  30:	e49db004 	pop	{fp}		; (ldr fp, [sp], #4)
+  34:	e12fff1e 	bx	lr
+
+00000038 <main>:
+
+int end  = 5;
+
+int main()
+{
+  38:	e92d4800 	push	{fp, lr}
+  3c:	e28db004 	add	fp, sp, #4
+  40:	e24dd008 	sub	sp, sp, #8
+  int num = 0;
+  44:	e3a03000 	mov	r3, #0
+  48:	e50b3008 	str	r3, [fp, #-8]
+  int result; 
+  while (num < end) {
+  4c:	ea000005 	b	68 <main+0x30>
+    result = add(num, num+1);
+  50:	e51b3008 	ldr	r3, [fp, #-8]
+  54:	e2833001 	add	r3, r3, #1
+  58:	e1a01003 	mov	r1, r3
+  5c:	e51b0008 	ldr	r0, [fp, #-8]
+  60:	ebfffffe 	bl	0 <add>
+  64:	e50b000c 	str	r0, [fp, #-12]
+  while (num < end) {
+  68:	e59f3024 	ldr	r3, [pc, #36]	; 94 <main+0x5c>
+  6c:	e5933000 	ldr	r3, [r3]
+  70:	e51b2008 	ldr	r2, [fp, #-8]
+  74:	e1520003 	cmp	r2, r3
+  78:	bafffff4 	blt	50 <main+0x18>
+  }
+  
+  asm("swi 0x11\n"); // exit
+  7c:	ef000011 	svc	0x00000011
+  80:	e3a03000 	mov	r3, #0
+  84:	e1a00003 	mov	r0, r3
+  88:	e24bd004 	sub	sp, fp, #4
+  8c:	e8bd4800 	pop	{fp, lr}
+  90:	e12fff1e 	bx	lr
+  94:	00000000 	.word	0x00000000
